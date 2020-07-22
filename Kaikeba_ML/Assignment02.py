@@ -1,7 +1,7 @@
 """
     使用numpy实现Boston房价预测
     Step1 数据加载，来源sklearn中的load_boston
-    Step2 数据规范化，将X 采用正态分布规范化
+    Step2 数据规范化，将X采用正态分布规范化
     Step3 初始化网络
     Step4 定义激活函数，损失函数，学习率 epoch
     Step5 循环执行：前向传播，计算损失函数，反向传播，参数更新
