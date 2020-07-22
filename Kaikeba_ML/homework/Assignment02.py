@@ -8,19 +8,14 @@
     Step6 输出训练好的model参数，即w1, w2, b1, b2
 """
 import numpy as np
-import pandas as pd
 from sklearn.datasets import load_boston
-from sklearn.utils import shuffle, resample
 
-# 数据加载
-data = load_boston()
+data = load_boston()  # 数据加载
 X_ = data['data']
 y = data['target']
-# print(data.keys())
-print(y)
 
 """
-Feature: 'CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT'
+    Feature: 'CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT'
     CRIM 城镇人均犯罪率
     ZN 住宅用地比例
     INDUS 非零售商业用地比例
@@ -43,33 +38,40 @@ y = y.reshape(y.shape[0], 1)
 X_ = (X_ - np.mean(X_, axis=0)) / np.std(X_, axis=0)
 
 """
-    初始化网络参数
-    定义隐藏层维度，w1,b1,w2,b2
+    初始化网络参数: 定义隐藏层维度，w1,b1,w2,b2
 """
-# n_features = X_.shape[1]
+print(X_)
+
+n_features = X_.shape[1]
+print(n_features)
 # n_hidden = 10
 # w1 = np.random.randn(n_features, n_hidden)
 # b1 = np.zeros(n_hidden)
 # w2 = np.random.randn(n_hidden, 1)
 # b2 = np.zeros(1)
 #
+#
 # # ReLU函数
 # def Relu(x):
 #     """ 这里写你的代码 """
 #     pass
 #
+#
 # # 设置学习率
 # learning_rate = 1e-6
+#
 #
 # # 定义损失函数
 # def MSE_loss(y, y_hat):
 #     """ 这里写你的代码 """
 #     pass
 #
+#
 # # 定义线性回归函数
 # def Linear(X, W1, b1):
 #     """ 这里写你的代码 """
 #     pass
+#
 #
 # # 5000次迭代
 # for t in range(5000):
