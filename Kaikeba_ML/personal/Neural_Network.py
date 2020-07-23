@@ -7,8 +7,6 @@ import numpy as np
 init network
 初始化三层网络的w、b
 '''
-
-
 def init_network():
     # noinspection PyShadowingNames
     network = dict()
@@ -25,8 +23,6 @@ def init_network():
 activation function
 使用ReLU函数
 '''
-
-
 def activation(m):
     return np.maximum(0, m)
 
@@ -34,8 +30,6 @@ def activation(m):
 '''
 计算Loss
 '''
-
-
 # noinspection PyShadowingNames
 def MSE_Loss(y, y_hat):
     return 1 / 2 * np.mean(np.square(y - y_hat))
@@ -45,8 +39,6 @@ def MSE_Loss(y, y_hat):
 output layer
 恒等式
 '''
-
-
 # noinspection PyShadowingNames
 def identity(x):
     return x
@@ -55,8 +47,6 @@ def identity(x):
 """
 Forward Propagation
 """
-
-
 # noinspection PyShadowingNames
 def forward_propagation(network, x):
     W1, W2, W3 = network['W1'], network['W2'], network['W3']
