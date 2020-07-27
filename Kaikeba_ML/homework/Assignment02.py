@@ -53,7 +53,7 @@ def ReLU(x):
     return np.maximum(0, x)
 
 # 设置学习率
-learning_rate = 1e-6
+LR = 1e-6
 
 # 定义损失函数
 # noinspection PyShadowingNames
@@ -62,22 +62,22 @@ def MSE_loss(y, y_hat):
 
 # 定义线性回归函数
 # noinspection PyShadowingNames
-def Linear(X, W1, b1):
-    return np.dot(X, W1) + b1
+def Linear(X, W, b):
+    return np.dot(X, W) + b
 
 # 5000次迭代
 for t in range(5000):
     # 前向传播，计算预测值y (Linear->Relu->Linear)
-    """ 这里写你的代码 """
-
+    y_ = Linear(X_, w1, b1)  # 输入到隐藏层
+    z1 = ReLU(y_)  # 激活
+    y_pred = Linear(z1)
     # 计算损失函数, 并输出每次epoch的loss
-    """ 这里写你的代码 """
-
-    # 反向传播，基于loss 计算w1和w2的梯度
-    """ 这里写你的代码 """
+    loss = MSE_loss(y, y_pred)
+    print("Epoch:" + t + "\n" + "Loss:" + loss)
+    # 反向传播，基于loss,计算w1和w2的梯度
 
     # 更新权重, 对w1, w2, b1, b2进行更新
-    """ 这里写你的代码 """
+
 
 # 得到最终的w1, w2
 print('w1={} \n w2={}'.format(w1, w2))
