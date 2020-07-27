@@ -48,36 +48,50 @@ b1 = np.zeros(n_hidden)
 w2 = np.random.randn(n_hidden, 1)
 b2 = np.zeros(1)
 
+
 # ReLU函数
 def ReLU(x):
     return np.maximum(0, x)
 
+
 # 设置学习率
 LR = 1e-6
+
 
 # 定义损失函数
 # noinspection PyShadowingNames
 def MSE_loss(y, y_hat):
     return np.mean(np.square(y - y_hat))
 
+
 # 定义线性回归函数
 # noinspection PyShadowingNames
 def Linear(X, W, b):
     return np.dot(X, W) + b
 
+
 # 5000次迭代
 for t in range(5000):
-    # 前向传播，计算预测值y (Linear->Relu->Linear)
+    # 前向传播，计算预测值y (Linear -> ReLU -> Linear)
     y_ = Linear(X_, w1, b1)  # 输入到隐藏层
-    z1 = ReLU(y_)  # 激活
-    y_pred = Linear(z1)
+    z = ReLU(y_)  # 激活
+    y_pred = Linear(z, w2, b2)  # 输出预测值
     # 计算损失函数, 并输出每次epoch的loss
     loss = MSE_loss(y, y_pred)
-    print("Epoch:" + t + "\n" + "Loss:" + loss)
-    # 反向传播，基于loss,计算w1和w2的梯度
-
+    print("Epoch:", t, "Loss:", loss)
+    # 反向传播
+    grad_y_pred = 2 * (y_pred - y)  # 损失函数求导，得到梯度
+    # 计算w2梯度
+    grad_w2 = np.dot(z.T, grad_y_pred)
+    back_relu = np.dot(grad_y_pred, w2.T)
+    back_relu[y_ < 0] = 0
+    # 计算w1梯度
+    grad_w1 = np.dot(X_.T, back_relu)
     # 更新权重, 对w1, w2, b1, b2进行更新
-
+    w1 -= LR * grad_w1
+    w2 -= LR * grad_w2
+    b1 -= LR * b1
+    b2 -= LR * b2
 
 # 得到最终的w1, w2
-print('w1={} \n w2={}'.format(w1, w2))
+print('w1={} \n w2={} \n b1={} \n b2={}'.format(w1, w2, b1, b2))
