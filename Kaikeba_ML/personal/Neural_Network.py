@@ -1,5 +1,12 @@
 """
 使用numpy搭建神经网络
+Step1.定义网络结构(输入层、隐藏层、输出层)
+Step2.初始化模型参数
+Step3.循环操作:
+    - 执行前向传播，得到prediction
+    - 计算损失函数
+    - 执行反向传播
+    - 权值更新
 """
 import numpy as np
 
@@ -32,7 +39,7 @@ def activation(m):
 '''
 # noinspection PyShadowingNames
 def MSE_Loss(y, y_hat):
-    return 1 / 2 * np.mean(np.square(y - y_hat))
+    return np.mean(np.square(y - y_hat))
 
 
 '''
