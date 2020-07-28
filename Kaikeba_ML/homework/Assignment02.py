@@ -49,9 +49,14 @@ w2 = np.random.randn(n_hidden, 1)
 b2 = np.zeros(1)
 
 
-# ReLU函数
+# ReLU
 def ReLU(x):
     return np.maximum(0, x)
+
+
+# ReLU导数
+def ReLU_Deriv(x):
+    return (x > 0) + 0
 
 
 # 设置学习率
@@ -73,16 +78,18 @@ def Linear(X, W, b):
 # 5000次迭代
 for t in range(5000):
     # 前向传播，计算预测值y (Linear -> ReLU -> Linear)
-    y_ = Linear(X_, w1, b1)  # 输入到隐藏层
-    z = ReLU(y_)  # 激活
-    y_pred = Linear(z, w2, b2)  # 输出预测值
+    layer_1_temp = Linear(X_, w1, b1)  # 输入到隐藏层
+    layer_1 = ReLU(y1)  # 第1层输出
+    layer_2 = Linear(layer_1, w2, b2)  # 第2层输出，即预测值
+    layer_2_delta = y - layer_2  # 第2层变化量
     # 计算损失函数, 并输出每次epoch的loss
-    loss = MSE_loss(y, y_pred)
+    loss = MSE_loss(y, layer_2)
     print("Epoch:", t, "Loss:", loss)
     # 反向传播
+    layer_1_delta = np.dot(layer_2_delta, w2.T) * ReLU_Deriv(layer_1)  # 第1层的梯度
     grad_y_pred = 2 * (y_pred - y)  # 损失函数求导，得到梯度
     # 计算w2梯度
-    grad_w2 = np.dot(z.T, grad_y_pred)
+    grad_w2 = np.dot(layer_1.T, grad_y_pred)
     back_relu = np.dot(grad_y_pred, w2.T)
     back_relu[y_ < 0] = 0
     # 计算w1梯度
