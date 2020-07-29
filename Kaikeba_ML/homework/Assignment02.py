@@ -76,24 +76,23 @@ def Linear(X, W, b):
 
 
 # 5000次迭代
-for t in range(5000):
+for t in range(8000):
     # 前向传播，计算预测值y (Linear -> ReLU -> Linear)
-    layer_1_temp = Linear(X_, w1, b1)  # 输入到隐藏层
-    layer_1 = ReLU(y1)  # 第1层输出
-    layer_2 = Linear(layer_1, w2, b2)  # 第2层输出，即预测值
-    layer_2_delta = y - layer_2  # 第2层变化量
+    layer_1_in = Linear(X_, w1, b1)  # 输入到隐藏层
+    layer_1_out = ReLU(layer_1_in)  # 第1层输出
+    y_hat = Linear(layer_1_out, w2, b2)  # 第2层输出，即预测值
     # 计算损失函数, 并输出每次epoch的loss
-    loss = MSE_loss(y, layer_2)
+    loss = MSE_loss(y, y_hat)
     print("Epoch:", t, "Loss:", loss)
     # 反向传播
-    layer_1_delta = np.dot(layer_2_delta, w2.T) * ReLU_Deriv(layer_1)  # 第1层的梯度
-    grad_y_pred = 2 * (y_pred - y)  # 损失函数求导，得到梯度
+    loss_delta = 2 * (y_hat - y)  # 损失函数求导
     # 计算w2梯度
-    grad_w2 = np.dot(layer_1.T, grad_y_pred)
-    back_relu = np.dot(grad_y_pred, w2.T)
-    back_relu[y_ < 0] = 0
+    grad_w2 = np.dot(layer_1_out.T, loss_delta)
     # 计算w1梯度
-    grad_w1 = np.dot(X_.T, back_relu)
+    # grad_w1 = np.dot(X_, w2.T) * ReLU_Deriv(layer_1_out)
+    grad_temp_relu = np.dot(loss_delta, w2.T)
+    grad_temp_relu[layer_1_in < 0] = 0
+    grad_w1 = np.dot(X_.T, grad_temp_relu)
     # 更新权重, 对w1, w2, b1, b2进行更新
     w1 -= LR * grad_w1
     w2 -= LR * grad_w2
