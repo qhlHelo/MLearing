@@ -1,6 +1,6 @@
 import numpy as np
-
-# from numpy.random import rand
+from sklearn.datasets import load_boston
+from numpy.random import rand
 
 # x = np.random.randn(13, 10)  # 标准正态分布
 #
@@ -35,3 +35,10 @@ import numpy as np
 
 # lights = np.array([[1, 0, 1], [0, 1, 1], [0, 0, 1], [1, 1, 1]])
 # print(lights[0:1])
+
+# data = load_boston()  # 数据加载
+# X = data['data']
+# n_hidden = 10
+# b1 = np.zeros(X.shape[0] * n_hidden).reshape(X.shape[0], n_hidden)
+# print(b1)
+# print(b1.shape)

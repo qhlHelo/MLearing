@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.datasets import load_boston
 
 data = load_boston()  # 数据加载
-X_ = data['data']
+X = data['data']
 y = data['target']
 
 """
@@ -35,18 +35,18 @@ Feature: 'CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX',
 y = y.reshape(y.shape[0], 1)
 
 # 数据规范化
-X_ = (X_ - np.mean(X_, axis=0)) / np.std(X_, axis=0)
+X = (X - np.mean(X, axis=0)) / np.std(X, axis=0)
 
 """
 初始化网络参数: 定义隐藏层维度，w1,b1,w2,b2
 """
 
-n_features = X_.shape[1]
+n_features = X.shape[1]
 n_hidden = 10  # 隐藏层维度
 w1 = np.random.randn(n_features, n_hidden)
-b1 = np.zeros(n_hidden)
+b1 = np.zeros(X.shape[0] * n_hidden).reshape(X.shape[0], n_hidden)
 w2 = np.random.randn(n_hidden, 1)
-b2 = np.zeros(1)
+b2 = np.zeros(X.shape[0]).reshape(X.shape[0], 1)
 
 
 # ReLU
@@ -65,7 +65,7 @@ LR = 1e-6
 
 # 定义损失函数
 # noinspection PyShadowingNames
-def MSE_loss(y, y_hat):
+def MSE_Lose(y, y_hat):
     return np.mean(np.square(y - y_hat))
 
 
@@ -75,26 +75,29 @@ def Linear(X, W, b):
     return np.dot(X, W) + b
 
 
-# 5000次迭代
-for t in range(6000):
-    # 前向传播，计算预测值y (Linear -> ReLU -> Linear)
-    z1 = Linear(X_, w1, b1)  # 输入到隐藏层
-    a1 = ReLU(z1)  # 第1层输出
-    y_hat = Linear(a1, w2, b2)  # 第2层输出，即预测值
-    # 计算损失函数, 并输出每次epoch的loss
-    loss = MSE_loss(y, y_hat)
-    print("Epoch:", t, "Loss:", loss)
-    # 反向传播
-    delta = 2 * (y_hat - y)  # 损失函数求导
-    grad_w2 = np.dot(a1.T, delta)  # 计算w2梯度
-    grad_w1_temp = np.dot(w2.T, delta)
-    grad_w1_temp2 = ReLU_Deriv(z1).dot(grad_w1_temp)
-    grad_w1 = np.dot(X_.T, grad_w1_temp2)
-    # 更新权重, 对w1, w2, b1, b2进行更新
+# 50000次迭代
+for i in range(50000):
+    # 1，前向传播，计算预测值y_hat (Linear -> ReLU -> Linear)
+    z1 = Linear(X, w1, b1)  # 输入到隐藏层  (506,10)
+    a1 = ReLU(z1)  # 第1层输出  (506,10)
+    y_hat = Linear(a1, w2, b2)  # 第2层输出，即预测值  (506,1)
+    # 计算损失/代价函数, 并输出每次epoch的C
+    C = MSE_Lose(y, y_hat)
+    print("Epoch:", i, "Cost:", C)
+
+    # 2，反向传播
+    delta_L = y_hat - y  # 输出层误差，δL  (506,1)
+    grad_w2 = np.dot(a1.T, delta_L)  # 计算w2梯度，δC/δw2  (10,1)
+    grad_b2 = delta_L  # 计算b2梯度  (506,1)
+    delta_1 = np.dot(delta_L, w2.T) * ReLU_Deriv(a1)  # 计算第1层误差  (506,10)
+    grad_w1 = np.dot(X.T, delta_1)  # 计算w1梯度  (13,10)
+    grad_b1 = delta_1  # 计算b1梯度  (506,10)
+
+    # 3，更新权重, 对w1, w2, b1, b2进行更新
     w1 -= LR * grad_w1
     w2 -= LR * grad_w2
-    b1 -= LR * b1
-    b2 -= LR * b2
+    b1 -= LR * grad_b1
+    b2 -= LR * grad_b2
 
 # 得到最终的w1, w2
-print('w1={} \n w2={} \n b1={} \n b2={}'.format(w1, w2, b1, b2))
+print('w1={} \n w2={}'.format(w1, w2))

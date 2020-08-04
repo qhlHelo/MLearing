@@ -76,7 +76,7 @@ def Linear(X, W, b):
 
 
 # 5000次迭代
-for t in range(8000):
+for t in range(9000):
     # 前向传播，计算预测值y (Linear -> ReLU -> Linear)
     layer_1_in = Linear(X_, w1, b1)  # 输入到隐藏层
     layer_1_out = ReLU(layer_1_in)  # 第1层输出
