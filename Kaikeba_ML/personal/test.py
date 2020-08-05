@@ -1,6 +1,6 @@
 import numpy as np
-from sklearn.datasets import load_boston
-from numpy.random import rand
+
+# from numpy.random import rand
 
 # x = np.random.randn(13, 10)  # 标准正态分布
 #
@@ -42,3 +42,13 @@ from numpy.random import rand
 # b1 = np.zeros(X.shape[0] * n_hidden).reshape(X.shape[0], n_hidden)
 # print(b1)
 # print(b1.shape)
+
+"""
+Hadamard product && Matrix product
+"""
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6], [7, 8]])
+
+print(a * b)  # Hadamard product
+print(np.dot(a, b))  # Matrix product
+print(np.asmatrix(a) * np.asmatrix(b))  # Matrix product
