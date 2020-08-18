@@ -1,10 +1,11 @@
-import torch
-import matplotlib as plt
 import numpy as np
-import sklearn
 import sklearn.datasets
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from matplotlib import pyplot as plt
+from sklearn.metrics import accuracy_score
+
 
 # 使用make_moon内置生成模型，随机产生二分类数据，200个样本
 np.random.seed(33)
