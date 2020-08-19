@@ -6,7 +6,6 @@ import torch.nn.functional as F
 from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
 
-
 # 使用make_moon内置生成模型，随机产生二分类数据，200个样本
 np.random.seed(33)
 X, y = sklearn.datasets.make_moons(200, noise=0.2)
@@ -19,6 +18,7 @@ X = torch.from_numpy(X).type(torch.FloatTensor)
 y = torch.from_numpy(y).type(torch.LongTensor)
 print(X)
 print(y)
+
 
 # 定义的网络模型继承了nn.Module
 class Net(nn.Module):
@@ -33,7 +33,7 @@ class Net(nn.Module):
         # 第一层的输出
         x = self.fc1(x)
         # 激活层
-        x = F.tanh(x)
+        x = torch.tanh(x)
         # 输出层
         x = self.fc2(x)
         return x
@@ -49,6 +49,7 @@ class Net(nn.Module):
             else:
                 ans.append(1)
         return torch.tensor(ans)
+
 
 # 初始化模型
 model = Net()
@@ -77,11 +78,13 @@ for i in range(epochs):
 print(model.predict(X))
 print(accuracy_score(model.predict(X), y))
 
+
 # 进行预测，并转换为numpy类型
 def predict(x):
     x = torch.from_numpy(x).type(torch.FloatTensor)
     ans = model.predict(x)
     return ans.numpy()
+
 
 # 绘制二分类决策面
 def plot_decision_boundary(pred_func, X, y):
@@ -99,5 +102,6 @@ def plot_decision_boundary(pred_func, X, y):
     # 绘制样本点
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.binary)
     plt.show()
+
 
 plot_decision_boundary(lambda x: predict(x), X.numpy(), y.numpy())
