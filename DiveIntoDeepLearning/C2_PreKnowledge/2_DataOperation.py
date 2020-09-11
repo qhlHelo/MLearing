@@ -150,13 +150,9 @@ id_before = id(y)
 torch.add(x, y, out=y)  # y += x, y.add_(x)
 print(id(y) == id_before)  # True
 
-
 """
 2.5 Tensor和NumPy相互转换
 """
-
-
-
 
 """
 2.6 Tensor on GPU
