@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import torch.nn as nn
+import cv2
 
 """
 CNN：pytorch测试
@@ -21,6 +22,7 @@ image = image.astype('float32')
 
 # unsqueeze：升维
 image = torch.from_numpy(image).unsqueeze(0).unsqueeze(1)
+# 权重，即卷积设置
 weight = torch.from_numpy(filters).unsqueeze(1).type(torch.FloatTensor)
 
 # 1输入通道，1输出通道，filter_size=3
