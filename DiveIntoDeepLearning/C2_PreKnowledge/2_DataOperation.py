@@ -130,25 +130,25 @@ svd	                                奇异值分解
 python id(): 返回对象的内存地址
 """
 # 开辟新的内存地址
-x = torch.tensor([1, 2])
-y = torch.tensor([3, 4])
-id_before = id(y)
-print("id_before: ", id_before)
-y = y + x
-print("id(y): ", id(y))
-print("未使用索引，内存地址是否相同: ", id(y) == id_before)  # False
+# x = torch.tensor([1, 2])
+# y = torch.tensor([3, 4])
+# id_before = id(y)
+# print("id_before: ", id_before)
+# y = y + x
+# print("id(y): ", id(y))
+# print("未使用索引，内存地址是否相同: ", id(y) == id_before)  # False
 # 使用索引，指定原来的内存地址
-x = torch.tensor([1, 2])
-y = torch.tensor([3, 4])
-id_before = id(y)
-y[:] = y + x
-print("使用索引，内存地址是否相同: ", id(y) == id_before)  # True
+# x = torch.tensor([1, 2])
+# y = torch.tensor([3, 4])
+# id_before = id(y)
+# y[:] = y + x
+# print("使用索引，内存地址是否相同: ", id(y) == id_before)  # True
 # 使用add(input, value, out)也可以实现
-x = torch.tensor([1, 2])
-y = torch.tensor([3, 4])
-id_before = id(y)
-torch.add(x, y, out=y)  # y += x, y.add_(x)
-print(id(y) == id_before)  # True
+# x = torch.tensor([1, 2])
+# y = torch.tensor([3, 4])
+# id_before = id(y)
+# torch.add(x, y, out=y)  # y += x, y.add_(x)
+# print(id(y) == id_before)  # True
 
 """
 2.5 Tensor和NumPy相互转换
@@ -157,3 +157,11 @@ print(id(y) == id_before)  # True
 """
 2.6 Tensor on GPU
 """
+# 以下代码只有在PyTorch GPU版本上才会执行
+if torch.cuda.is_available():
+    device = torch.device("cuda")          # GPU
+    y = torch.ones_like(x, device=device)  # 直接创建一个在GPU上的Tensor
+    x = x.to(device)                       # 等价于 .to("cuda")
+    z = x + y
+    print(z)
+    print(z.to("cpu", torch.double))       # to()还可以同时更改数据类型
