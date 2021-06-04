@@ -1,11 +1,10 @@
+'''
+数据预处理
+'''
 import os
 
 import pandas as pd
 import torch
-
-'''
-数据预处理
-'''
 
 ''' 读取数据集 '''
 os.makedirs(os.path.join('.', 'data'), exist_ok=True)  # os.path.join：路径拼接
